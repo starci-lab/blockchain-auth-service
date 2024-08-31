@@ -29,12 +29,10 @@ export class VerifyMessageResponseData {
   @IsBoolean()
   @ApiProperty({ example: true })
       result: boolean
-  @IsNotEmpty()
-  @ApiProperty({ example: "hello world" })
-      originMessage: string
   @IsHexadecimal()
+  @IsOptional()
   @ApiProperty({ example: "0xD9a49b9c8df1b8Be5Ef7770EE328650B0Bcf6345" })
-      address: string
+      address?: string
 }
 
 export class VerifyMessageResponse
@@ -45,7 +43,6 @@ implements Response<VerifyMessageResponseData>
   @ApiProperty({
       example: {
           result: true,
-          originMessage: "hello world",
           address: "0xD9a49b9c8df1b8Be5Ef7770EE328650B0Bcf6345",
       },
   })

@@ -12,26 +12,39 @@ export class VerificationControllerService {
     private readonly aptosService: AptosService,
     ) {}
 
-    public verifyMessage({ message, signature, publicKey, platform }: VerifyMessageRequestBody) : VerifyMessageResponse {
+    public verifyMessage({
+        message,
+        signature,
+        publicKey,
+        platform,
+    }: VerifyMessageRequestBody): VerifyMessageResponse {
         let result = false
         let address = publicKey
         platform = platform ?? Platform.Evm
         switch (platform) {
         case Platform.Evm:
-            result = this.evmService.verifyMessage({ message, signature, publicKey })
+            result = this.evmService.verifyMessage({
+                message,
+                signature,
+                publicKey,
+            })
             break
         case Platform.Aptos:
-            result = this.aptosService.verifyMessage({ message, signature, publicKey })
-            address = this.aptosService.toAddress(publicKey) 
+            result = this.aptosService.verifyMessage({
+                message,
+                signature,
+                publicKey,
+            })
+            address = this.aptosService.toAddress(publicKey)
             break
         default:
             this.logger.error(`Unknown platform: ${platform}`)
             result = false
             break
         }
-        return { 
+        return {
             message: result ? "Success" : "Failed",
-            data: { originMessage: message, result, address }
+            data: { result, address: result ? address : undefined },
         }
     }
 }
