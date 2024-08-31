@@ -1,30 +1,35 @@
 import { SignedMessage } from "@/types"
 import {
-    Aptos,
-    AptosConfig,
+    Account,
+    Ed25519PrivateKey,
     Ed25519PublicKey,
     Ed25519Signature,
-    Network,
 } from "@aptos-labs/ts-sdk"
-import { Injectable } from "@nestjs/common"
+import { Injectable, Logger } from "@nestjs/common"
 
 @Injectable()
 export class AptosService {
+    private readonly logger = new Logger(AptosService.name)
     constructor() {}
 
     public verifyMessage({ message, signature, publicKey }: Omit<SignedMessage, "chainName">) {
-        const ed25519PublicKey = new Ed25519PublicKey(publicKey)
-        const result = ed25519PublicKey.verifySignature({
-            message,
-            signature: new Ed25519Signature(signature),
+        try {
+            const ed25519PublicKey = new Ed25519PublicKey(publicKey)
+            const result = ed25519PublicKey.verifySignature({
+                message,
+                signature: new Ed25519Signature(signature),
+            })
+            return !!result
+        } catch (ex) {
+            this.logger.error(ex)
+            return false
+        } 
+    }
+
+    public signMessage(message: string, privateKey: string) {
+        const ed25519PrivateKey = Account.fromPrivateKey({
+            privateKey: new Ed25519PrivateKey(privateKey)
         })
-        return !!result
+        return ed25519PrivateKey.sign(message).toString()
     }
 }
-
-export const getAptos = (network: Network) =>
-    new Aptos(
-        new AptosConfig({
-            network,
-        }),
-    )

@@ -1,10 +1,8 @@
-import { AccountPostgresEntity } from "@/database"
-
 export interface SignedMessage {
   message: string;
   publicKey: string;
   signature: string;
-  chainName: ChainName;
+  platform?: Platform;
 }
 
 export interface Response<Data> {
@@ -12,11 +10,7 @@ export interface Response<Data> {
   data: Data;
 }
 
-export enum ChainName {
+export enum Platform {
+  Evm = "evm",
   Aptos = "aptos",
-}
-
-export interface ControllerServiceParams<Payload = undefined> {
-  payload?: Payload;
-  account: AccountPostgresEntity;
 }

@@ -1,2 +1,2 @@
-export * from "./claw.service"
+export * from "./verification.service"
 export * from "./controllers.module"

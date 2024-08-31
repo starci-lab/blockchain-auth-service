@@ -1,20 +1,15 @@
-import { Module } from "@nestjs/common"
-import { ClawControllerService } from "./claw.service"
-import { AccountPostgresEntity, ClawTicketPostgresEntity } from "@/database"
-import { TypeOrmModule } from "@nestjs/typeorm"
+import { Global, Module } from "@nestjs/common"
+import { VerificationControllerService } from "./verification.service"
 
+@Global()
 @Module({
     imports: [
-        TypeOrmModule.forFeature([
-            AccountPostgresEntity,
-            ClawTicketPostgresEntity,
-        ]),
     ],
     providers: [
-        ClawControllerService
+        VerificationControllerService
     ],
     exports: [
-        ClawControllerService
+        VerificationControllerService
     ]
 })
 export class ControllersModule {}

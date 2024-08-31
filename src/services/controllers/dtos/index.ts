@@ -1,1 +1,1 @@
-export * from "./claw.dto"
+export * from "./verify-message.dto"

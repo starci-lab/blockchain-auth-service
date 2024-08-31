@@ -1,0 +1,9 @@
+services:
+  server:
+    build:
+      context: ..
+    environment:
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - 3065:3065
