@@ -35,28 +35,28 @@ describe("VerificationControllerService", () => {
             const { privateKey, publicKey } = Account.generate()
             const signature = aptosService.signMessage(message, privateKey.toString())
             const result = service.verifyMessage({ message, signature, publicKey: publicKey.toString(), platform: Platform.Aptos })
-            expect(result).toBe(true)
+            expect(result.data.result).toBe(true)
         })
         it("should verifyMessage on Evm sucessfully", async () => {
             const message = "hello world"
             const { privateKey, address } = Wallet.createRandom()
             const signature = evmService.signMessage(message, privateKey)
             const result = service.verifyMessage({ message, signature, publicKey: address, platform: Platform.Evm })
-            expect(result).toBe(true)
+            expect(result.data.result).toBe(true)
         })
         it("should verifyMessage on Aptos failed", async () => {
             const message = "hello world"
             const { privateKey, publicKey } = Account.generate()
             const signature = aptosService.signMessage(message, privateKey.toString())
             const result = service.verifyMessage({ message, signature: `${signature}x` , publicKey: publicKey.toString(), platform: Platform.Aptos })
-            expect(result).toBe(false)
+            expect(result.data.result).toBe(false)
         })
         it("should verifyMessage on Evm failed", async () => {
             const message = "hello world"
             const { privateKey, publicKey } = Account.generate()
             const signature = evmService.signMessage(message, privateKey.toString())
             const result = service.verifyMessage({ message, signature: `${signature}x`, publicKey: publicKey.toString(), platform: Platform.Evm })
-            expect(result).toBe(false)
+            expect(result.data.result).toBe(false)
         })
     })
 })
