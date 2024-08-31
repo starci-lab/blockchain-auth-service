@@ -29,6 +29,6 @@ export class VerifyMessageResponseData {
 export class VerifyMessageResponse implements Response<VerifyMessageResponseData> {
     @ApiProperty({ example: "Success" })
         message: string
-    @ApiProperty({ example: { result: true } })
+    @ApiProperty({ example: { result: true, originMessage: "hello world" } })
         data: VerifyMessageResponseData
 }
