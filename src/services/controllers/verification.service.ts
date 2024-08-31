@@ -14,6 +14,7 @@ export class VerificationControllerService {
 
     public verifyMessage({ message, signature, publicKey, platform }: VerifyMessageRequestBody) : VerifyMessageResponse {
         let result = false
+        let address = publicKey
         platform = platform ?? Platform.Evm
         switch (platform) {
         case Platform.Evm:
@@ -21,6 +22,7 @@ export class VerificationControllerService {
             break
         case Platform.Aptos:
             result = this.aptosService.verifyMessage({ message, signature, publicKey })
+            address = this.aptosService.toAddress(publicKey) 
             break
         default:
             this.logger.error(`Unknown platform: ${platform}`)
@@ -29,7 +31,7 @@ export class VerificationControllerService {
         }
         return { 
             message: result ? "Success" : "Failed",
-            data: { originMessage: message, result }
+            data: { originMessage: message, result, address }
         }
     }
 }

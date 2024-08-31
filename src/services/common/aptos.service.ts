@@ -32,4 +32,8 @@ export class AptosService {
         })
         return ed25519PrivateKey.sign(message).toString()
     }
+
+    public toAddress(publicKey: string) {
+        return new Ed25519PublicKey(publicKey).authKey().toString()
+    }
 }
