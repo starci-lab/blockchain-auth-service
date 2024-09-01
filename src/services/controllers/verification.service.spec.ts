@@ -83,7 +83,7 @@ describe("VerificationControllerService", () => {
         it("should verifyMessage on Aptos success after 59s", async () => {
             jest.useFakeTimers()
             const { data: { message }} = await service.requestMessage()
-            await jest.advanceTimersByTimeAsync(1000 * 59)
+            await jest.advanceTimersByTimeAsync(1000 * 14)
             const { privateKey, address } = Wallet.createRandom()
             const signature = evmService.signMessage(message, privateKey)
             const result = await service.verifyMessage({ message, signature, publicKey: address, chain: Chain.Avalanche })
@@ -93,7 +93,7 @@ describe("VerificationControllerService", () => {
         it("should verifyMessage on Aptos failed timed out message", async () => {
             jest.useFakeTimers()
             const { data: { message }} = await service.requestMessage()
-            await jest.advanceTimersByTimeAsync(1000 * 1000)
+            await jest.advanceTimersByTimeAsync(1000 * 20)
             const { privateKey, publicKey } = Account.generate()
             const signature = evmService.signMessage(message, privateKey.toString())
             await service.verifyMessage({

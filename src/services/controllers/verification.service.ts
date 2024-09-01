@@ -1,10 +1,14 @@
 import { Inject, Injectable, Logger } from "@nestjs/common"
 import { AptosService, EvmService } from "../common"
 import { Chain, chainToPlatform, Platform } from "@/types"
-import { RequestMessageResponse, VerifyMessageRequestBody, VerifyMessageResponse } from "./dtos"
+import { RequestMessageResponse, RetrieveRequestBody, RetrieveResponse, VerifyMessageRequestBody, VerifyMessageResponse } from "./dtos"
 import { randomUUID } from "crypto"
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
-import { MessageNotFound } from "@/exceptions"
+import { MessageNotFound, RetrieveIdNotFound } from "@/exceptions"
+
+export interface RetrieveData {
+    chain: Chain
+}
 
 @Injectable()
 export class VerificationControllerService {
@@ -65,12 +69,34 @@ export class VerificationControllerService {
             break
         }
     
-        const retrievedId = randomUUID()
-        await this.cacheManager.set(retrievedId, true, 1000 * 60)
+        const retrieveId = randomUUID()
+
+        const data : RetrieveData = {
+            chain
+        }
+        await this.cacheManager.set(retrieveId, data, 1000 * 60)
     
         return {
             message: result ? "Success" : "Failed",
-            data: { result, address: result ? address : undefined, retrievedId },
+            data: { result, address: result ? address : undefined, retrieveId },
+        }
+    }
+
+    public async retrieve({
+        retrieveId
+    }: RetrieveRequestBody): Promise<RetrieveResponse> {
+        const data = await this.cacheManager.get(retrieveId)
+        if (!data) {
+            throw new RetrieveIdNotFound(retrieveId)
+        }
+        const { chain } = data as RetrieveData
+        await this.cacheManager.del(retrieveId)
+    
+        return {
+            message: "Success",
+            data: {
+                chain
+            },
         }
     }
 }

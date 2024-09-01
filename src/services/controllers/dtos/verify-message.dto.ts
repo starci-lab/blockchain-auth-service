@@ -36,7 +36,7 @@ export class VerifyMessageResponseData {
       address?: string
   @IsUUID(4)
   @ApiProperty({ example: "550e8400-e29b-41d4-a716-446655440000" })
-      retrievedId: string
+      retrieveId: string
 }
 
 export class VerifyMessageResponse
@@ -48,7 +48,7 @@ implements Response<VerifyMessageResponseData>
       example: {
           result: true,
           address: "0xD9a49b9c8df1b8Be5Ef7770EE328650B0Bcf6345",
-          retrievedId: "550e8400-e29b-41d4-a716-446655440000",
+          retrieveId: "550e8400-e29b-41d4-a716-446655440000",
       },
   })
       data: VerifyMessageResponseData
