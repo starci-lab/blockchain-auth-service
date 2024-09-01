@@ -66,7 +66,7 @@ export class VerificationControllerService {
         }
     
         const retrievedId = randomUUID()
-        await this.cacheManager.set(retrievedId, true)
+        await this.cacheManager.set(retrievedId, true, 1000 * 60)
     
         return {
             message: result ? "Success" : "Failed",
