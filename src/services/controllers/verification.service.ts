@@ -1,7 +1,10 @@
-import { Injectable, Logger } from "@nestjs/common"
+import { Inject, Injectable, Logger } from "@nestjs/common"
 import { AptosService, EvmService } from "../common"
-import { Platform } from "@/types"
-import { VerifyMessageRequestBody, VerifyMessageResponse } from "./dtos"
+import { Chain, chainToPlatform, Platform } from "@/types"
+import { RequestMessageResponse, VerifyMessageRequestBody, VerifyMessageResponse } from "./dtos"
+import { randomUUID } from "crypto"
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
+import { MessageNotFound } from "@/exceptions"
 
 @Injectable()
 export class VerificationControllerService {
@@ -10,17 +13,36 @@ export class VerificationControllerService {
     constructor(
     private readonly evmService: EvmService,
     private readonly aptosService: AptosService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
 
-    public verifyMessage({
+    public async requestMessage(): Promise<RequestMessageResponse> {
+        const message = randomUUID()
+        await this.cacheManager.set(message, true)
+        return {
+            message: "Success",
+            data: { 
+                message
+            },
+        }
+    }
+
+    public async verifyMessage({
         message,
         signature,
         publicKey,
-        platform,
-    }: VerifyMessageRequestBody): VerifyMessageResponse {
+        chain,
+    }: VerifyMessageRequestBody): Promise<VerifyMessageResponse> {
+        const valid = await this.cacheManager.get(message)
+        if (!valid) {
+            throw new MessageNotFound(message)
+        }
+        await this.cacheManager.del(message)
         let result = false
         let address = publicKey
-        platform = platform ?? Platform.Evm
+    
+        chain = chain ?? Chain.Avalanche
+        const platform = chainToPlatform(chain)
         switch (platform) {
         case Platform.Evm:
             result = this.evmService.verifyMessage({
@@ -42,9 +64,13 @@ export class VerificationControllerService {
             result = false
             break
         }
+    
+        const retrievedId = randomUUID()
+        await this.cacheManager.set(retrievedId, true)
+    
         return {
             message: result ? "Success" : "Failed",
-            data: { result, address: result ? address : undefined },
+            data: { result, address: result ? address : undefined, retrievedId },
         }
     }
 }

@@ -1,10 +1,11 @@
-import { SignedMessage, Response, Platform } from "@/types"
+import { SignedMessage, Response, Chain } from "@/types"
 import { ApiProperty } from "@nestjs/swagger"
 import {
     IsBoolean,
     IsHexadecimal,
     IsNotEmpty,
     IsOptional,
+    IsUUID,
 } from "class-validator"
 
 export class VerifyMessageRequestBody implements SignedMessage {
@@ -21,8 +22,8 @@ export class VerifyMessageRequestBody implements SignedMessage {
   })
       signature: string
   @IsOptional()
-  @ApiProperty({ example: Platform.Evm })
-      platform?: Platform
+  @ApiProperty({ example: Chain.Avalanche })
+      chain?: Chain
 }
 
 export class VerifyMessageResponseData {
@@ -33,6 +34,9 @@ export class VerifyMessageResponseData {
   @IsOptional()
   @ApiProperty({ example: "0xD9a49b9c8df1b8Be5Ef7770EE328650B0Bcf6345" })
       address?: string
+  @IsUUID(4)
+  @ApiProperty({ example: "550e8400-e29b-41d4-a716-446655440000" })
+      retrievedId: string
 }
 
 export class VerifyMessageResponse
@@ -44,6 +48,7 @@ implements Response<VerifyMessageResponseData>
       example: {
           result: true,
           address: "0xD9a49b9c8df1b8Be5Ef7770EE328650B0Bcf6345",
+          retrievedId: "550e8400-e29b-41d4-a716-446655440000",
       },
   })
       data: VerifyMessageResponseData

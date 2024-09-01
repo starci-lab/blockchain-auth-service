@@ -1,5 +1,5 @@
 import { VerificationControllerService } from "@/services"
-import { VerifyMessageRequestBody, VerifyMessageResponse } from "@/services/controllers/dtos"
+import { RequestMessageResponse, VerifyMessageRequestBody, VerifyMessageResponse } from "@/services/controllers/dtos"
 import { Body, Controller, HttpCode, HttpStatus, Logger, Post } from "@nestjs/common"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
@@ -13,8 +13,15 @@ export class VerificationController {
 
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ type: VerifyMessageResponse, status: 200 })
-    @Post()
-    public verifyMessage(@Body() body: VerifyMessageRequestBody) {
-        return this.verificationService.verifyMessage(body)
+    @Post("verify-message")
+    public async verifyMessage(@Body() body: VerifyMessageRequestBody) {
+        return await this.verificationService.verifyMessage(body)
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({ type: RequestMessageResponse, status: 200 })
+    @Post("request-message")
+    public async requestMessage() {
+        return await this.verificationService.requestMessage()
     }
 }

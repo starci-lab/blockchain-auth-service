@@ -5,5 +5,7 @@ services:
     environment:
       PORT: ${PORT}
       NODE_ENV: ${NODE_ENV}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - 3065:3065
