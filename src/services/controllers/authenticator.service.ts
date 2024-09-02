@@ -77,7 +77,7 @@ export class AuthenticatorControllerService {
             chain,
             address,
         }
-        await this.cacheManager.set(authenticationId, data, 1000 * 60)
+        await this.cacheManager.set(authenticationId, data, 1000 * 60 * 3)
 
         return {
             message: result ? "Success" : "Failed",
