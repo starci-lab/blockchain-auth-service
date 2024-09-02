@@ -30,7 +30,3 @@ export const chainToPlatform = (chain: Chain): Platform => {
         throw new Error(`Unknown chain: ${chain}`)
     }
 }
-
-export interface AuthenticationData {
-  chain: Chain;
-}
