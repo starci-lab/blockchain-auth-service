@@ -1,6 +1,5 @@
-import { Chain } from "@/types"
-import { InputType, Field, ObjectType } from "@nestjs/graphql"
-import { IsNotEmpty, IsUUID } from "class-validator"
+import { InputType, Field } from "@nestjs/graphql"
+import { IsUUID } from "class-validator"
 
 @InputType()
 export class GetAuthenticationDataInput {
@@ -9,13 +8,4 @@ export class GetAuthenticationDataInput {
         name: "authenticationId",
     })
         authenticationId: string
-}
-
-@ObjectType()
-export class GetAuthenticationDataResult {
-    @IsNotEmpty()
-    @Field(() => String, {
-        name: "chain",
-    })
-        chain: Chain
 }

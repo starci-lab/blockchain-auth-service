@@ -73,6 +73,7 @@ export class AuthenticatorControllerService {
 
         const data: AuthenticationData = {
             chain,
+            address
         }
         await this.cacheManager.set(authenticationId, data, 1000 * 60)
 

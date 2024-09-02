@@ -1,6 +1,6 @@
 
 import { Inject, Injectable, Logger } from "@nestjs/common"
-import { GetAuthenticationDataInput, GetAuthenticationDataResult } from "./dtos"
+import { GetAuthenticationDataInput } from "./dtos"
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
 import { AuthenticationIdNotFound } from "@/exceptions"
 import { AuthenticationData } from "@/types"
@@ -13,17 +13,14 @@ export class AuthenticatorResolverService {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
-    public async getAuthenticationData({ authenticationId }: GetAuthenticationDataInput): Promise<GetAuthenticationDataResult> {
-        const data = await this.cacheManager.get(authenticationId)
+    public async getAuthenticationData({ authenticationId }: GetAuthenticationDataInput): Promise<AuthenticationData> {
+        const data = await this.cacheManager.get(authenticationId) as AuthenticationData
         if (!data) {
             throw new AuthenticationIdNotFound(authenticationId)
         }
-        const { chain } = data as AuthenticationData
         await this.cacheManager.del(authenticationId)
 
-        return {
-            chain,
-        }
+        return data
     }
 }
 
