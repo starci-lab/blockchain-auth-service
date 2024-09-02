@@ -24,4 +24,11 @@ export class AuthenticatorController {
     public async requestMessage() {
         return await this.authenticatorService.requestMessage()
     }
+
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({ type: VerifyMessageRequestBody, status: 200 })
+    @Post("test/get-fake-avalanche-signature")
+    public async getFakeAvalancheSignature() {
+        return await this.authenticatorService.getFakeAvalancheSignature()
+    }
 }

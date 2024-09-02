@@ -73,13 +73,26 @@ export class AuthenticatorControllerService {
 
         const data: AuthenticationData = {
             chain,
-            address
+            address,
         }
         await this.cacheManager.set(authenticationId, data, 1000 * 60)
 
         return {
             message: result ? "Success" : "Failed",
             data: { result, address: result ? address : undefined, authenticationId },
+        }
+    }
+
+    public async getFakeAvalancheSignature(): Promise<VerifyMessageRequestBody> {
+        const {
+            data: { message },
+        } = await this.requestMessage()
+        const { privateKey, publicKey } = this.evmService.getRandomKeyPair()
+        const signature = this.evmService.signMessage(message, privateKey)
+        return {
+            message,
+            publicKey,
+            signature,
         }
     }
 }

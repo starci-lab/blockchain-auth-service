@@ -20,4 +20,8 @@ export class EvmService {
         const account = new Wallet(privateKey)
         return account.signMessageSync(message)
     }
+
+    public getRandomKeyPair() {
+        return Wallet.createRandom()
+    }
 }
