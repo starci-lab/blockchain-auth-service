@@ -18,7 +18,7 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
         }),
         CacheModule.register({
             store: redisStore,
-            ttl: 1000 * 15, 
+            ttl: 1000 * 60, 
             isGlobal: true,
             host: envConfig().redis.host,
             port: envConfig().redis.port,
