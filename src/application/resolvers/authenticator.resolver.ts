@@ -8,7 +8,7 @@ import { Args, Query, Resolver } from "@nestjs/graphql"
 @Resolver()
 export class AuthenticatorResolver {
     constructor(
-    private readonly authenticatorResolverService: AuthenticatorResolverService,
+    private readonly authenticatorService: AuthenticatorResolverService,
     ) {}
 
   @Query(() => GetAuthenticationDataResult, {
@@ -18,6 +18,6 @@ export class AuthenticatorResolver {
     async getAuthenticationData(
     @Args("input") input: GetAuthenticationDataInput,
     ) {
-        return await this.authenticatorResolverService.getAuthenticationData(input)
+        return await this.authenticatorService.getAuthenticationData(input)
     }
 }

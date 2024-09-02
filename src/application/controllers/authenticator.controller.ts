@@ -8,20 +8,20 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger"
 export class AuthenticatorController {
     private readonly logger = new Logger(AuthenticatorController.name)
     constructor(
-        private readonly AuthenticatorService: AuthenticatorControllerService
+        private readonly authenticatorService: AuthenticatorControllerService
     ) {}
 
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ type: VerifyMessageResponse, status: 200 })
     @Post("verify-message")
     public async verifyMessage(@Body() body: VerifyMessageRequestBody) {
-        return await this.AuthenticatorService.verifyMessage(body)
+        return await this.authenticatorService.verifyMessage(body)
     }
 
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ type: RequestMessageResponse, status: 200 })
     @Post("request-message")
     public async requestMessage() {
-        return await this.AuthenticatorService.requestMessage()
+        return await this.authenticatorService.requestMessage()
     }
 }
