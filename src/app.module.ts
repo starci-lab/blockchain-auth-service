@@ -6,6 +6,9 @@ import { ApplicationModule } from "./application"
 import { ServicesModule } from "./services"
 import { CacheModule } from "@nestjs/cache-manager"
 import * as redisStore from "cache-manager-redis-store"
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
+import { GraphQLModule } from "@nestjs/graphql"
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
 
 @Module({
     imports: [
@@ -19,6 +22,15 @@ import * as redisStore from "cache-manager-redis-store"
             isGlobal: true,
             host: envConfig().redis.host,
             port: envConfig().redis.port,
+        }),
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+            driver: ApolloDriver,
+            typePaths: ["./**/*.gql"],
+            playground: false,
+            plugins: [
+                ApolloServerPluginLandingPageLocalDefault(),
+            ],
+            introspection: true,
         }),
 
         ServicesModule,

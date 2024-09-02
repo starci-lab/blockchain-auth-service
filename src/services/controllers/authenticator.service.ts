@@ -1,23 +1,23 @@
 import { Inject, Injectable, Logger } from "@nestjs/common"
 import { AptosService, EvmService } from "../common"
-import { Chain, chainToPlatform, Platform } from "@/types"
-import { RequestMessageResponse, RetrieveRequestBody, RetrieveResponse, VerifyMessageRequestBody, VerifyMessageResponse } from "./dtos"
+import { AuthenticationData, Chain, chainToPlatform, Platform } from "@/types"
+import {
+    RequestMessageResponse,
+    VerifyMessageRequestBody,
+    VerifyMessageResponse,
+} from "./dtos"
 import { randomUUID } from "crypto"
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
-import { MessageNotFound, RetrieveIdNotFound } from "@/exceptions"
-
-export interface RetrieveData {
-    chain: Chain
-}
+import { MessageNotFound } from "@/exceptions"
 
 @Injectable()
-export class VerificationControllerService {
-    private readonly logger = new Logger(VerificationControllerService.name)
+export class AuthenticatorControllerService {
+    private readonly logger = new Logger(AuthenticatorControllerService.name)
 
     constructor(
     private readonly evmService: EvmService,
     private readonly aptosService: AptosService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
     public async requestMessage(): Promise<RequestMessageResponse> {
@@ -25,8 +25,8 @@ export class VerificationControllerService {
         await this.cacheManager.set(message, true)
         return {
             message: "Success",
-            data: { 
-                message
+            data: {
+                message,
             },
         }
     }
@@ -44,7 +44,7 @@ export class VerificationControllerService {
         await this.cacheManager.del(message)
         let result = false
         let address = publicKey
-    
+
         chain = chain ?? Chain.Avalanche
         const platform = chainToPlatform(chain)
         switch (platform) {
@@ -68,35 +68,17 @@ export class VerificationControllerService {
             result = false
             break
         }
-    
-        const retrieveId = randomUUID()
 
-        const data : RetrieveData = {
-            chain
+        const authenticationId = randomUUID()
+
+        const data: AuthenticationData = {
+            chain,
         }
-        await this.cacheManager.set(retrieveId, data, 1000 * 60)
-    
+        await this.cacheManager.set(authenticationId, data, 1000 * 60)
+
         return {
             message: result ? "Success" : "Failed",
-            data: { result, address: result ? address : undefined, retrieveId },
-        }
-    }
-
-    public async retrieve({
-        retrieveId
-    }: RetrieveRequestBody): Promise<RetrieveResponse> {
-        const data = await this.cacheManager.get(retrieveId)
-        if (!data) {
-            throw new RetrieveIdNotFound(retrieveId)
-        }
-        const { chain } = data as RetrieveData
-        await this.cacheManager.del(retrieveId)
-    
-        return {
-            message: "Success",
-            data: {
-                chain
-            },
+            data: { result, address: result ? address : undefined, authenticationId },
         }
     }
 }

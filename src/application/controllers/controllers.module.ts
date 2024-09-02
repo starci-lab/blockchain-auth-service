@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common"
-import { VerificationController } from "./verification.controller"
+import { AuthenticatorController } from "./authenticator.controller"
 
 @Module({
     imports: [
     ],
     controllers: [
-        VerificationController
+        AuthenticatorController
     ],
 })
 export class ControllersModule {}

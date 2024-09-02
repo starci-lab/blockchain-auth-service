@@ -1,15 +1,15 @@
 import { Global, Module } from "@nestjs/common"
-import { VerificationControllerService } from "./verification.service"
+import { AuthenticatorControllerService } from "./authenticator.service"
 
 @Global()
 @Module({
     imports: [
     ],
     providers: [
-        VerificationControllerService
+        AuthenticatorControllerService
     ],
     exports: [
-        VerificationControllerService
+        AuthenticatorControllerService
     ]
 })
 export class ControllersModule {}
