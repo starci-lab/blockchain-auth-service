@@ -1,3 +1,5 @@
+import { ChainNotFoundException } from "@/exceptions";
+
 export interface SignedMessage {
   message: string;
   publicKey: string;
@@ -27,6 +29,6 @@ export const chainToPlatform = (chain: Chain): Platform => {
     case Chain.Avalanche:
         return Platform.Evm
     default:
-        throw new Error(`Unknown chain: ${chain}`)
+        throw new ChainNotFoundException (`Unknown chain: ${chain}`)
     }
 }
