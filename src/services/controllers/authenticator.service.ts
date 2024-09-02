@@ -2,14 +2,15 @@ import { Inject, Injectable, Logger } from "@nestjs/common"
 import { AptosService, EvmService } from "../common"
 import { AuthenticationData, Chain, chainToPlatform, Platform } from "@/types"
 import {
-    GetFakeAvalancheSignatureResponseData,
+    GetFakeSignatureResponse,
+    GetFakeSignatureRequestBody,
     RequestMessageResponse,
     VerifyMessageRequestBody,
     VerifyMessageResponse,
 } from "./dtos"
 import { randomUUID } from "crypto"
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
-import { InvalidSignatureException, MessageNotFound } from "@/exceptions"
+import { ChainNotSupportedException, InvalidSignatureException, MessageNotFound } from "@/exceptions"
 
 @Injectable()
 export class AuthenticatorControllerService {
@@ -85,17 +86,25 @@ export class AuthenticatorControllerService {
         }
     }
 
-    public async getFakeAvalancheSignature(): Promise<GetFakeAvalancheSignatureResponseData> {
-        const {
-            data: { message },
-        } = await this.requestMessage()
-        const { privateKey, address } = this.evmService.getRandomKeyPair()
-        const signature = this.evmService.signMessage(message, privateKey)
-        return {
-            message,
-            publicKey: address,
-            signature,
-            chain: Chain.Avalanche
+    public async getFakeSignature({ accountNumber, chain }: GetFakeSignatureRequestBody): Promise<GetFakeSignatureResponse> {
+        const { data: { message } } = await this.requestMessage()
+        chain = chain ?? Chain.Avalanche
+        const platform = chainToPlatform(chain)
+        switch (platform) {
+        case Platform.Evm: {
+            const { privateKey, address } = this.evmService.getFakeKeyPair(accountNumber)
+            const signature = this.evmService.signMessage(message, privateKey)
+            return {
+                message: "Success",
+                data: {
+                    message,
+                    publicKey: address,
+                    signature,
+                    chain: Chain.Avalanche
+                }
+            }
         }
-    }
+        default: throw new ChainNotSupportedException(chain)
+        }  
+    }     
 }

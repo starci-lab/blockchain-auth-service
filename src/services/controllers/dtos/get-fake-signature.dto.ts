@@ -3,14 +3,22 @@ import { VerifyMessageRequestBody } from "./verify-message.dto"
 import { ApiProperty } from "@nestjs/swagger"
 import { IsOptional } from "class-validator"
 
-export class GetFakeAvalancheSignatureResponseData extends VerifyMessageRequestBody {
+export class GetFakeSignatureRequestBody {
+  @IsOptional()
+  @ApiProperty({ example: Chain.Avalanche })
+      chain?: Chain
+  @IsOptional()
+  @ApiProperty({ example: 0 })
+      accountNumber?: number
+}
+export class GetFakeSignatureResponseData extends VerifyMessageRequestBody {
   @IsOptional()
   @ApiProperty({ example: Chain.Avalanche })
       chain?: Chain
 }
 
-export class GetFakeAvalancheSignatureResponse
-implements Response<VerifyMessageRequestBody>
+export class GetFakeSignatureResponse
+implements Response<GetFakeSignatureResponseData>
 {
   @ApiProperty({ example: "Success" })
       message: string
@@ -24,5 +32,5 @@ implements Response<VerifyMessageRequestBody>
           chain: Chain.Avalanche,
       },
   })
-      data: GetFakeAvalancheSignatureResponseData
+      data: GetFakeSignatureResponseData
 }

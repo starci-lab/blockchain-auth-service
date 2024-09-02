@@ -1,17 +1,27 @@
+import { fakeConfig } from "@/config"
 import { SignedMessage } from "@/types"
 import { Injectable, Logger } from "@nestjs/common"
-import { verifyMessage as _verifyMessage, Wallet } from "ethers"
+import {
+    verifyMessage as _verifyMessage,
+    HDNodeWallet,
+    Mnemonic,
+    Wallet,
+} from "ethers"
 
 @Injectable()
 export class EvmService {
     private readonly logger = new Logger(EvmService.name)
     constructor() {}
 
-    public verifyMessage({ message, signature, publicKey }: Omit<SignedMessage, "chainName">) {
+    public verifyMessage({
+        message,
+        signature,
+        publicKey,
+    }: Omit<SignedMessage, "chainName">) {
         try {
             return _verifyMessage(message, signature) === publicKey
         } catch (ex) {
-            this.logger.error(ex)   
+            this.logger.error(ex)
             return false
         }
     }
@@ -21,7 +31,10 @@ export class EvmService {
         return account.signMessageSync(message)
     }
 
-    public getRandomKeyPair() {
-        return Wallet.createRandom()
+    public getFakeKeyPair(accountNumber: number) {
+        return HDNodeWallet.fromMnemonic(
+            Mnemonic.fromPhrase(fakeConfig().mnemonic),
+            `m/44'/60'/${accountNumber}'/0/0`,
+        )
     }
 }
