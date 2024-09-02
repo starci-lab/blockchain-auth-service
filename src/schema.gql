@@ -8,5 +8,5 @@ type Query {
 }
 
 input GetAuthenticationDataInput {
-  authenticationId: String!
+  authenticationId: ID!
 }

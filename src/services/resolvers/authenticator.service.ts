@@ -18,7 +18,6 @@ export class AuthenticatorResolverService {
         if (!data) {
             throw new AuthenticationIdNotFound(authenticationId)
         }
-        await this.cacheManager.del(authenticationId)
 
         return data
     }
