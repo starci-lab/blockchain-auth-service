@@ -2,13 +2,14 @@ import { Inject, Injectable, Logger } from "@nestjs/common"
 import { AptosService, EvmService } from "../common"
 import { AuthenticationData, Chain, chainToPlatform, Platform } from "@/types"
 import {
+    GetFakeAvalancheSignatureResponseData,
     RequestMessageResponse,
     VerifyMessageRequestBody,
     VerifyMessageResponse,
 } from "./dtos"
 import { randomUUID } from "crypto"
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager"
-import { MessageNotFound } from "@/exceptions"
+import { InvalidSignatureException, MessageNotFound } from "@/exceptions"
 
 @Injectable()
 export class AuthenticatorControllerService {
@@ -68,6 +69,7 @@ export class AuthenticatorControllerService {
             result = false
             break
         }
+        if (!result) throw new InvalidSignatureException(signature)
 
         const authenticationId = randomUUID()
 
@@ -79,20 +81,21 @@ export class AuthenticatorControllerService {
 
         return {
             message: result ? "Success" : "Failed",
-            data: { result, address: result ? address : undefined, authenticationId },
+            data: { result, authenticationId },
         }
     }
 
-    public async getFakeAvalancheSignature(): Promise<VerifyMessageRequestBody> {
+    public async getFakeAvalancheSignature(): Promise<GetFakeAvalancheSignatureResponseData> {
         const {
             data: { message },
         } = await this.requestMessage()
-        const { privateKey, publicKey } = this.evmService.getRandomKeyPair()
+        const { privateKey, address } = this.evmService.getRandomKeyPair()
         const signature = this.evmService.signMessage(message, privateKey)
         return {
             message,
-            publicKey,
+            publicKey: address,
             signature,
+            chain: Chain.Avalanche
         }
     }
 }
