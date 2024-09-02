@@ -1,4 +1,4 @@
-import { ChainNotFoundException } from "@/exceptions";
+import { ChainNotFoundException } from "@/exceptions"
 
 export interface SignedMessage {
   message: string;
