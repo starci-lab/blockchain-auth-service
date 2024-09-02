@@ -29,6 +29,6 @@ export const chainToPlatform = (chain: Chain): Platform => {
     case Chain.Avalanche:
         return Platform.Evm
     default:
-        throw new ChainNotFoundException (`Unknown chain: ${chain}`)
+        throw new ChainNotFoundException (chain)
     }
 }
