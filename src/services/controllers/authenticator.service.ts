@@ -89,6 +89,8 @@ export class AuthenticatorControllerService {
     public async getFakeSignature({ accountNumber, chain }: GetFakeSignatureRequestBody): Promise<GetFakeSignatureResponse> {
         const { data: { message } } = await this.requestMessage()
         chain = chain ?? Chain.Avalanche
+        accountNumber = accountNumber ?? 0
+        
         const platform = chainToPlatform(chain)
         switch (platform) {
         case Platform.Evm: {
