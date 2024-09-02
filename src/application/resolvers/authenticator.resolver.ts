@@ -1,8 +1,9 @@
 import {
     AuthenticatorResolverService,
     GetAuthenticationDataInput,
-    GetAuthenticationDataResult,
 } from "@/services"
+import { AuthenticationData } from "@/types"
+
 import { Args, Query, Resolver } from "@nestjs/graphql"
 
 @Resolver()
@@ -11,7 +12,7 @@ export class AuthenticatorResolver {
     private readonly authenticatorService: AuthenticatorResolverService,
     ) {}
 
-  @Query(() => GetAuthenticationDataResult, {
+  @Query(() => AuthenticationData, {
       name: "authenticationData",
       nullable: true,
   })

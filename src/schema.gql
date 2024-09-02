@@ -1,9 +1,10 @@
-type GetAuthenticationDataResult {
+type AuthenticationData {
   chain: String!
+  address: String!
 }
 
 type Query {
-  authenticationData(input: GetAuthenticationDataInput!): GetAuthenticationDataResult
+  authenticationData(input: GetAuthenticationDataInput!): AuthenticationData
 }
 
 input GetAuthenticationDataInput {
