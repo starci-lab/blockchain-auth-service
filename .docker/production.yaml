@@ -7,5 +7,6 @@ services:
       NODE_ENV: ${NODE_ENV}
       REDIS_PORT: ${REDIS_PORT}
       REDIS_HOST: ${REDIS_HOST}
+      SALT: ${SALT}
     ports:
       - 3065:3065

@@ -19,6 +19,7 @@ jobs:
         NODE_ENV: ${{vars.NODE_ENV}}
         REDIS_PORT: ${{secrets.REDIS_PORT}}
         REDIS_HOST: ${{secrets.REDIS_HOST}}
+        SALT: ${{secrets.SALT}}
   
       run: docker compose -f .docker/production.yaml -p blockchain-auth-service up --build -d 
  

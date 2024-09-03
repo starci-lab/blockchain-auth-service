@@ -14,5 +14,5 @@ export const envConfig = () => ({
         host: process.env.REDIS_HOST,
         port: Number(process.env.REDIS_PORT ?? 6379),
     },
-    salt: process.env.SALT ?? "starci"
+    salt: process.env.SALT
 }) 
