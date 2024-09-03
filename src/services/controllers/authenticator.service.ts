@@ -24,7 +24,8 @@ export class AuthenticatorControllerService {
 
     public async requestMessage(): Promise<RequestMessageResponse> {
         const message = randomUUID()
-        await this.cacheManager.set(message, true)
+        //tempt inf for testing
+        await this.cacheManager.set(message, true, 0)
         return {
             message: "Success",
             data: {
@@ -43,7 +44,7 @@ export class AuthenticatorControllerService {
         if (!valid) {
             throw new MessageNotFound(message)
         }
-        await this.cacheManager.del(message)
+        //await this.cacheManager.del(message)
         let result = false
         let address = publicKey
 
