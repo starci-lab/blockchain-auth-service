@@ -34,10 +34,6 @@ export class VerifyMessageResponseData {
   @IsUUID(4)
   @ApiProperty({ example: "550e8400-e29b-41d4-a716-446655440000" })
       authenticationId: string
-  @IsNotEmpty()
-  @ApiProperty({ example: "0x6fc0C3f7B9Ec501A547185074F7299d34cd73209"})
-      address: string
-
 }
 
 export class VerifyMessageResponse

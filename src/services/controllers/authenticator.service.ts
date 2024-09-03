@@ -83,7 +83,7 @@ export class AuthenticatorControllerService {
 
         return {
             message: result ? "Success" : "Failed",
-            data: { result, authenticationId, address },
+            data: { result, authenticationId },
         }
     }
 
