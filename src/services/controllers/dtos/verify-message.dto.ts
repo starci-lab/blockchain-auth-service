@@ -5,7 +5,7 @@ import {
     IsHexadecimal,
     IsNotEmpty,
     IsOptional,
-    IsUUID,
+    IsString
 } from "class-validator"
 
 export class VerifyMessageRequestBody implements SignedMessage {
@@ -30,18 +30,25 @@ export class VerifyMessageResponseData {
   @IsBoolean()
   @ApiProperty({ example: true })
       result: boolean
-  @IsHexadecimal()
-  @IsUUID(4)
-  @ApiProperty({ example: "550e8400-e29b-41d4-a716-446655440000" })
-      authenticationId: string
+
+  @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: "0x6fc0C3f7B9Ec501A547185074F7299d34cd73209"})
+  @ApiProperty({
+      example: "3db0db142677359104026591d642506eb5d801d771bf652069db3374b5a6c570",
+  })
+      authenticationId: string
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: "0x6fc0C3f7B9Ec501A547185074F7299d34cd73209" })
       address: string
 }
 
 export class VerifyMessageResponse
 implements Response<VerifyMessageResponseData>
 {
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({ example: "Success" })
       message: string
   @ApiProperty({
