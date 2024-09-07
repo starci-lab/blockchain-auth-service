@@ -8,5 +8,10 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_HOST: ${REDIS_HOST}
       SALT: ${SALT}
+      MONGO_1_DB_NAME: ${MONGO_1_DB_NAME}
+      MONGO_1_HOST: ${MONGO_1_HOST}
+      MONGO_1_PORT: ${MONGO_1_PORT}
+      MONGO_1_USER: ${MONGO_1_USER}
+      MONGO_1_PASS: ${MONGO_1_PASS}
     ports:
       - 3065:3065

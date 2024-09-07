@@ -14,5 +14,16 @@ export const envConfig = () => ({
         host: process.env.REDIS_HOST,
         port: Number(process.env.REDIS_PORT ?? 6379),
     },
+    database: {
+        mongo: {
+            mongo1: {
+                dbName: process.env.MONGO_1_DB_NAME,
+                host: process.env.MONGO_1_HOST,
+                port: process.env.MONGO_1_PORT,
+                user: process.env.MONGO_1_USER,
+                pass: process.env.MONGO_1_PASS
+            }
+        },
+    },
     salt: process.env.SALT
 }) 

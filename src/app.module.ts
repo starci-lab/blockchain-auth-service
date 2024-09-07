@@ -9,6 +9,7 @@ import * as redisStore from "cache-manager-redis-store"
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
 import { GraphQLModule } from "@nestjs/graphql"
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
+import { MongooseModule } from "@nestjs/mongoose"
 
 @Module({
     imports: [
@@ -16,9 +17,17 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
             load: [envConfig],
             isGlobal: true,
         }),
+        MongooseModule.forRoot(
+            `mongodb://${envConfig().database.mongo.mongo1.host}:${envConfig().database.mongo.mongo1.port}`,
+            {
+                user: envConfig().database.mongo.mongo1.user,
+                pass: envConfig().database.mongo.mongo1.pass,
+                dbName: envConfig().database.mongo.mongo1.dbName,
+            },
+        ),
         CacheModule.register({
             store: redisStore,
-            ttl: 1000 * 60, 
+            ttl: 1000 * 60,
             isGlobal: true,
             host: envConfig().redis.host,
             port: envConfig().redis.port,
@@ -27,9 +36,7 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
             driver: ApolloDriver,
             typePaths: ["./**/*.gql"],
             playground: false,
-            plugins: [
-                ApolloServerPluginLandingPageLocalDefault(),
-            ],
+            plugins: [ApolloServerPluginLandingPageLocalDefault()],
             introspection: true,
         }),
 

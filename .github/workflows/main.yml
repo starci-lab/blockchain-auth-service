@@ -20,6 +20,10 @@ jobs:
         REDIS_PORT: ${{secrets.REDIS_PORT}}
         REDIS_HOST: ${{secrets.REDIS_HOST}}
         SALT: ${{secrets.SALT}}
-  
+        MONGO_1_DB_NAME: ${{secrets.MONGO_1_DB_NAME}}
+        MONGO_1_HOST: ${{secrets.MONGO_1_HOST}}
+        MONGO_1_PORT: ${{secrets.MONGO_1_PORT}}
+        MONGO_1_USER: ${{secrets.MONGO_1_USER}}
+        MONGO_1_PASS: ${{secrets.MONGO_1_PASS}}
       run: docker compose -f .docker/production.yaml -p blockchain-auth-service up --build -d 
  
