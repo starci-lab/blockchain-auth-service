@@ -2,20 +2,20 @@ import { ApiProperty } from "@nestjs/swagger"
 import { IsString } from "class-validator"
 import { Response } from "@/types"
 
-export class CreateRequestBody {
+export class WriteRequestBody {
     @IsString()
     @ApiProperty({ example: "exampleKey" })
-        storageKey: string
+        key: string
     @ApiProperty({ example: JSON.stringify({hello: "world"}) })
         data: string
 }
 
-export class CreateResponseData {
+export class WriteResponseData {
     @ApiProperty({ example: "507f1f77bcf86cd799439011" })
         objectId: string
 }
 
-export class CreateResponse implements Response<CreateResponseData> {
+export class WriteResponse implements Response<WriteResponseData> {
     @ApiProperty({ example: "Success" })
         message: string
     @ApiProperty({
@@ -23,5 +23,5 @@ export class CreateResponse implements Response<CreateResponseData> {
             objectId: "507f1f77bcf86cd799439011",
         },
     })
-        data: CreateResponseData
+        data: WriteResponseData
 }
