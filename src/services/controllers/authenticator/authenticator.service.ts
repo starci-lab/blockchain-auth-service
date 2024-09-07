@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from "@nestjs/common"
-import { AptosService, EvmService, Sha256Service } from "../common"
+import { AptosService, EvmService, Sha256Service } from "../../common"
 import { AuthenticationData, Chain, chainToPlatform, Platform } from "@/types"
 import {
     GetFakeSignatureResponse,
