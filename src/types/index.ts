@@ -1,2 +1,2 @@
 export * from "./base.type"
-export * from "./authentication.types" 
+export * from "./authentication.types"  
