@@ -14,6 +14,7 @@ export const envConfig = () => ({
         host: process.env.REDIS_HOST,
         port: Number(process.env.REDIS_PORT ?? 6379),
     },
+    ipfsUrl: process.env.IPFS_URL,
     database: {
         mongo: {
             mongo1: {

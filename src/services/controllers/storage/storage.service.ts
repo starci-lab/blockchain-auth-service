@@ -2,8 +2,8 @@ import { StorageSchema } from "@/database"
 import { Injectable, Logger } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { WriteResponse, WriteRequestBody, DeleteRequestBody, DeleteResponse, ReadRequestBody } from "./dtos"
-import { JsonParserService } from "../../common"
+import { WriteResponse, WriteRequestBody, DeleteParams, DeleteResponse, ReadRequestBody } from "./dtos"
+import { JsonService } from "../../common"
 import { StorageNotFound } from "@/exceptions"
 
 @Injectable()
@@ -13,11 +13,11 @@ export class StorageControllerService {
     constructor(
         @InjectModel(StorageSchema.name) 
         private readonly storageSchemaModel : Model<StorageSchema>,
-        private readonly jsonParserService: JsonParserService
+        private readonly jsonService: JsonService
     ) {}
 
     async write({ data, key }: WriteRequestBody): Promise<WriteResponse> {
-        const parsed = this.jsonParserService.parse(data)
+        const parsed = this.jsonService.parse(data)
 
         const created = await this.storageSchemaModel.findOneAndUpdate(
             { key: key},
@@ -36,7 +36,7 @@ export class StorageControllerService {
         }  
     }
 
-    async delete({ key }: DeleteRequestBody): Promise<DeleteResponse> {
+    async delete({ key }: DeleteParams): Promise<DeleteResponse> {
         const found = await this.storageSchemaModel.findOne({
             key,
         })

@@ -3,6 +3,7 @@ import { AuthenticatorControllerService } from "./authenticator"
 import { StorageControllerService } from "./storage"
 import { MongooseModule } from "@nestjs/mongoose"
 import { StorageSchema, StorageSchemaClass } from "@/database"
+import { IpfsControllerService } from "./ifps"
 
 @Global()
 @Module({
@@ -11,7 +12,15 @@ import { StorageSchema, StorageSchemaClass } from "@/database"
             { name: StorageSchema.name, schema: StorageSchemaClass },
         ]),
     ],
-    providers: [AuthenticatorControllerService, StorageControllerService],
-    exports: [AuthenticatorControllerService, StorageControllerService],
+    providers: [
+        AuthenticatorControllerService,
+        StorageControllerService,
+        IpfsControllerService,
+    ],
+    exports: [
+        AuthenticatorControllerService,
+        StorageControllerService,
+        IpfsControllerService,
+    ],
 })
 export class ControllersModule {}

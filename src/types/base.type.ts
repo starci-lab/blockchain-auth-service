@@ -7,9 +7,9 @@ export interface SignedMessage {
   chain?: Chain;
 }
 
-export interface Response<Data> {
+export interface Response<TData = undefined> {
   message: string;
-  data: Data;
+  data?: TData;
 }
 
 export enum Chain {
