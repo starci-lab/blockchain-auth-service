@@ -6,8 +6,7 @@ export class IpfsService implements OnModuleInit {
     private readonly logger = new Logger(IpfsService.name)
     constructor() {}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private client: any
+    private client
     async onModuleInit() {
         const { create } = await import("kubo-rpc-client") 
         this.client = create({
