@@ -13,5 +13,6 @@ services:
       MONGO_1_PORT: ${MONGO_1_PORT}
       MONGO_1_USER: ${MONGO_1_USER}
       MONGO_1_PASS: ${MONGO_1_PASS}
+      IPFS_URL: ${IPFS_URL}
     ports:
       - 3065:3065

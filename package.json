@@ -4,7 +4,9 @@
   "description": "",
   "author": "",
   "private": true,
+  "type": "commonjs",
   "license": "UNLICENSED",
+  "moduleResolution": "node16",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

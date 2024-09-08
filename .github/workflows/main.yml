@@ -25,5 +25,6 @@ jobs:
         MONGO_1_PORT: ${{secrets.MONGO_1_PORT}}
         MONGO_1_USER: ${{secrets.MONGO_1_USER}}
         MONGO_1_PASS: ${{secrets.MONGO_1_PASS}}
+        IPFS_URL: ${{secrets.IPFS_URL}}
       run: docker compose -f .docker/production.yaml -p blockchain-auth-service up --build -d 
  

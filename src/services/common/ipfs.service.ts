@@ -1,15 +1,18 @@
 import { envConfig } from "@/config"
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common"
-import { KuboRPCClient, create } from "kubo-rpc-client"
 
 @Injectable()
 export class IpfsService implements OnModuleInit {
     private readonly logger = new Logger(IpfsService.name)
     constructor() {}
 
-    private client: KuboRPCClient
-    onModuleInit() {
-        this.client = create(envConfig().ipfsUrl)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private client: any
+    async onModuleInit() {
+        const { create } = await import("kubo-rpc-client") 
+        this.client = create({
+            url: envConfig().ipfsUrl
+        })
     }
 
     async addJson(json: Record<string, unknown>) {
