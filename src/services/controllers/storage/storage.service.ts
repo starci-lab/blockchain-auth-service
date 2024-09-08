@@ -2,7 +2,7 @@ import { StorageSchema } from "@/database"
 import { Injectable, Logger } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { WriteResponse, WriteRequestBody, DeleteParams, DeleteResponse, ReadRequestBody } from "./dtos"
+import { WriteResponse, WriteRequestBody, DeleteParams, DeleteResponse, ReadParams } from "./dtos"
 import { JsonService } from "../../common"
 import { StorageNotFound } from "@/exceptions"
 
@@ -50,7 +50,7 @@ export class StorageControllerService {
         }    
     }
 
-    async read({ key }: ReadRequestBody): Promise<unknown> {
+    async read({ key }: ReadParams): Promise<unknown> {
         const found = await this.storageSchemaModel.findOne({
             key,
         })
