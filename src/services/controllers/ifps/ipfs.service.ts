@@ -1,6 +1,6 @@
 import { IpfsService, JsonService } from "../../common"
 import { Injectable, Logger } from "@nestjs/common"
-import { RemoveParams, UploadJsonRequestBody, UploadJsonResponse } from "./dtos"
+import { RemoveParams, RemoveResponse, UploadJsonRequestBody, UploadJsonResponse } from "./dtos"
 
 @Injectable()
 export class IpfsControllerService {
@@ -21,13 +21,10 @@ export class IpfsControllerService {
         }
     }
 
-    public async remove({ cid }: RemoveParams) : Promise<UploadJsonResponse> {
+    public async remove({ cid }: RemoveParams) : Promise<RemoveResponse> {
         await this.ipfsService.unpin(cid)
         return {
-            message: "Remove successfully",
-            data: {
-                cid
-            }
+            message: "Remove successfully"
         }
     }
 }
