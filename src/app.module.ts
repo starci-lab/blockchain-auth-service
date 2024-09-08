@@ -40,7 +40,7 @@ import { MongooseModule } from "@nestjs/mongoose"
             introspection: true,
         }),
 
-        ServicesModule,
+        ServicesModule, 
         ApplicationModule,
     ],
     controllers: [],
