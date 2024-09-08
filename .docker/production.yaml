@@ -14,5 +14,6 @@ services:
       MONGO_1_USER: ${MONGO_1_USER}
       MONGO_1_PASS: ${MONGO_1_PASS}
       IPFS_URL: ${IPFS_URL}
+      DEFAULT_AUTH_KEY: ${DEFAULT_AUTH_KEY}
     ports:
       - 3065:3065

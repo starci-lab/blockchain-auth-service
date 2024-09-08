@@ -1,3 +1,4 @@
+import { AuthKeyGuard } from "@/guards"
 import {
     WriteRequestBody,
     WriteResponse,
@@ -13,9 +14,11 @@ import {
     Logger,
     Param,
     Post,
+    UseGuards,
 } from "@nestjs/common"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
+@UseGuards(AuthKeyGuard)
 @ApiTags("Storage")
 @Controller("api/v1/storage")
 export class StorageController {

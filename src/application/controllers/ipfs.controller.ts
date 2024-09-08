@@ -1,3 +1,4 @@
+import { AuthKeyGuard } from "@/guards"
 import {
     IpfsControllerService,
     UploadJsonResponse,
@@ -12,9 +13,11 @@ import {
     Logger,
     Param,
     Post,
+    UseGuards,
 } from "@nestjs/common"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
+@UseGuards(AuthKeyGuard)
 @ApiTags("IPFS")
 @Controller("api/v1/ipfs")
 export class IpfsController {

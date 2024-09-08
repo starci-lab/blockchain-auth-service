@@ -1,3 +1,4 @@
+import { AuthKeyGuard } from "@/guards"
 import {
     AuthenticatorControllerService,
     GetFakeSignatureRequestBody,
@@ -14,9 +15,11 @@ import {
     HttpStatus,
     Logger,
     Post,
+    UseGuards,
 } from "@nestjs/common"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
+@UseGuards(AuthKeyGuard)
 @ApiTags("Authenticator")
 @Controller("api/v1/authenticator")
 export class AuthenticatorController {
@@ -41,7 +44,7 @@ export class AuthenticatorController {
 
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ type: VerifyMessageRequestBody, status: 200 })
-  @Post("get-fake-signature")
+  @Post("fake-signature")
   public async getFakeSignature(@Body() body: GetFakeSignatureRequestBody) {
       return await this.authenticatorService.getFakeSignature(body)
   }

@@ -26,5 +26,6 @@ export const envConfig = () => ({
             }
         },
     },
+    defaultAuthKey: process.env.DEFAULT_AUTH_KEY,
     salt: process.env.SALT
 }) 
